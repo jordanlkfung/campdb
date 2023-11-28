@@ -19,14 +19,17 @@ app.use(bodyParser.json());//used for parsing json data that comes in
 app.use(cors());
 
 app.post('/signin', (req, res) => {//allows access to request that is coming to the server or response that we are sending out
-    const username = req.body.username;//parses using body parser package
+    console.log(req.body)
+    const id = req.body.username;//parses using body parser package
     const password = req.body.password;
-    db.query("SELECT first_name, last_name FROM EMPLOYEES WHERE id = ? AND password = ?",[username, password])
-    db.query("INSERT INTO EMPLOYEES (id,login) VALUES (?, ?)", [username,password], (err, result) =>{//use quesiton mark to escape query values to prevent from injection attacks
+    console.log(id)
+    console.log(password)
+    db.query("SELECT first_name, last_name, id FROM EMPLOYEES WHERE id = ? AND password = ?",[id, password], (err,result)=>{
         if(err)
-            console.log(err);
+            console.log(err)
         else{
-            res.send({username:username});
+            res.send(result)
+            console.log(result)
         }
     })
 })
@@ -54,8 +57,8 @@ app.get('/viewMyEmployees', (req,res) =>{
 })
 
 app.get('/viewChildCamps',(req,res)=>{
-    const parentId = req.body;
-    db.query("SELECT CHILD.first_name, CHILD.last_name, CAMP.name, CAMP.start_date, CAMP.end_date FROM CHILD INNER JOIN PARENT_CHILDREN ON CHILD.id=PARENT_CHILDREN.child_id INNER JOIN PARENT ON PARENT_CHILDREN.parent_id=PARENT.id INNER JOIN CAMP_CAMPERS ON CHILD.id=CAMP_CAMPERS.child_id INNER JOIN CAMP ON CAMP_CAMPERS.camp_id=CAMPS.id WHERE PARENT.id=?",[parentId],(err,result)=>{
+    const parentId = req.query.id;
+    db.query("SELECT CHILD.first_name, CHILD.last_name, CAMP.name, CAMP.start_date, CAMP.end_date FROM CHILD INNER JOIN PARENT_CHILDREN ON CHILD.id=PARENT_CHILDREN.child_id INNER JOIN PARENT ON PARENT_CHILDREN.parent_id=PARENT.id INNER JOIN CAMP_CAMPERS ON CHILD.id=CAMP_CAMPERS.camper_id INNER JOIN CAMP ON CAMP_CAMPERS.camp_id=CAMPS.id WHERE PARENT.id=?",[parentId],(err,result)=>{
         if(err)
             console.log(err)
         else   
