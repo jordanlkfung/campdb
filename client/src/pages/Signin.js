@@ -6,23 +6,53 @@ import { Navigate } from 'react-router-dom';
 import '../index.css';
 
 function Signin() {
-  const [username, setUserName] = useState('');
-  const [password, setPassword] = useState('');
-  const user = useSelector((state) => state.auth.user)
-  const error = useSelector ((state) => state.auth.err)
+  const [username, setUserName] = useState('')
+  const [password, setPassword] = useState('')
+  let user=false;
+  // const user = useSelector((state) => state.auth.user)
+  // const error = useSelector ((state) => state.auth.err)
   const dispatch = useDispatch()
 
   const submitHandler = (e) => {
     e.preventDefault();
-   dispatch(signin({username,password}))
-      .then((response) => {
-        console.log(response.payload);
-        setUserName('');
-        setPassword('');
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+  //  dispatch(signin({username,password}))
+  //     .then((response) => {
+  //       console.log(response.payload);
+  //       setUserName('');
+  //       setPassword('');
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error:', error);
+  //     });
+  axios.post('http://localhost:8080/signin',{username: username,password: password}).then((data)=>{
+    if(data.data.length!=0&&data.data[0].id==username){
+      window.localStorage.setItem("user", data.data[0].id)
+      window.localStorage.setItem("name",data.data[0].first_name+' '+data.data[0].last_name)
+      user=true
+      console.log(data.data[0].id)
+      setUserName('')
+      setPassword('')
+    }
+  })
+
+  console.log('a')
+    // try{
+    //   const fetchData = async() =>{
+    //     console.log("here2")
+
+    //     const data = await axios.post('/http://localhost:8080/signin',{username: username,password: password})
+    //     console.log("here")
+    //     if(data.id==username){
+    //       window.localStorage.setItem("user", data.id)
+    //       window.localStorage.setItem("name",data.first_name+' '+data.last_name)
+    //       console.log(data.id)
+    //       {<Navigate to="/ViewParticipants" replace = {true}/>}
+    //     }
+    //   }
+    // }catch(error){
+    //   console.log('error')
+    //   console.log(error)
+    // }
   };
 
   const apiCall = () => {
@@ -52,7 +82,7 @@ function Signin() {
         <div>
           <button type='submit'>Submit</button>
         </div>
-        {user ? <Navigate to="/ViewParticipants" replace = {true}/>:console.log('user '+user)}
+        {window.localStorage.getItem("user") && <Navigate to="/ViewParticipants" replace = {true}/>}
       </form>
     </div>
   );
