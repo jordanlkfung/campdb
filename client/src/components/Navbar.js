@@ -10,6 +10,7 @@ export default function Navbar(){
     const handleLogout=()=>{
         window.localStorage.removeItem("user")
         window.localStorage.removeItem("name")
+        window.localStorage.removeItem('uType')
         setForce(!forceRender)
     }
     useEffect(() => {
@@ -21,14 +22,20 @@ export default function Navbar(){
         setForce(!forceRender)
       }, [location.pathname]);
     return(
-        <nav class='bg-green-400 max-w-screen'>
+        <nav class='bg-sky-600 max-w-screen'>
             {/* <Link to='/'>
                 Home
             </Link> */}
             <ul className='flex flex-row font medium space-x-8 mt-0 rtl:space-x-reverse'>
                 <li><Link to='/'>Home</Link></li>
-                <li><Link to='/ViewParticipants'>View</Link></li>
-                <li>{window.localStorage.getItem("user") ? <Link to='/' onClick={handleLogout}>Logout</Link>:<Link to='/signin'>signin</Link>}</li>
+                {window.localStorage.getItem("uType")=="staff"&&<li><Link to='/ViewCamps'>View Camps</Link></li>}
+                {window.localStorage.getItem("uType")=="staff"&&<li><Link to='/ViewParticipants'>View Campers</Link></li>}
+                {window.localStorage.getItem("uType")=="staff"&&<li><Link to='/ViewStaff'>View Staff</Link></li>}
+                {window.localStorage.getItem("uType")=="staff"&&<li><Link to='/AddStaff'>Add Staff</Link></li>}
+                {window.localStorage.getItem("uType")=="parent"&&<li><Link to='/ViewChild'>View Camps</Link></li>}
+                {window.localStorage.getItem("uType")=="parent"&&<li><Link to='/RegisterCamp'>Register Camps</Link></li>}
+                {window.localStorage.getItem("uType")=="parent"&&<li><Link to='/AddChild'>Add Child</Link></li>}
+                <li>{window.localStorage.getItem("user") && <Link to='/' onClick={handleLogout}>Logout</Link>}</li>
             </ul>
         </nav>
     )

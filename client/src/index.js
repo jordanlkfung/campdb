@@ -3,11 +3,15 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import Signin from './pages/Signin';
+import ParentSignIn from './pages/ParentSignIn';
 import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import RootLayout from './layouts/RootLayout';
 import { store } from './store/store'
 import { Provider } from 'react-redux';
 import ViewParticipants from './pages/ViewParticipants';
+import ViewChild from './pages/ViewChild';
+import AddChild from './pages/AddChild';
+import RegisterCamp from './pages/RegisterCamp';
 
 // const router = createBrowserRouter([//nested routes with object orientation
 //   {
@@ -27,8 +31,12 @@ const router = createBrowserRouter(
     <Route path='/' element={<RootLayout/>}>
       <Route path = '/' element={<App/>}/>
       <Route path ='/Signin' element = {<Signin />}/>
-      <Route path ='ViewParticipants' element = {<ViewParticipants/>}/>
-    </Route>//s
+      <Route path ='/ViewParticipants' element = {<ViewParticipants/>}/>
+      <Route path ='/ParentSignin' element = {<ParentSignIn/>}/>
+      <Route path ='/ViewChild' element = {<ViewChild/>}/>
+      <Route path ='/AddChild' element = {<AddChild/>}/>
+      <Route path ='/RegisterCamp' element = {<RegisterCamp/>}/>
+    </Route>
   )
   )
 )

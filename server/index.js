@@ -33,6 +33,19 @@ app.post('/signin', (req, res) => {//allows access to request that is coming to 
         }
     })
 })
+app.post('/ParentSignIn',(req,res)=>{
+    console.log(req)
+    const id=req.body.username
+    const password=req.body.password
+    db.query("SELECT first_name, last_name, id FROM PARENT WHERE id = ? AND password = ?",[id,password], (err,result)=>{
+        if(err)
+            console.log(err)
+        else{
+            res.send(result)
+            console.log(result)
+        }
+    })
+})
 
 app.get('/viewCampers',(req,res) =>{
     const camp = req.query.campID;
@@ -58,7 +71,8 @@ app.get('/viewMyEmployees', (req,res) =>{
 
 app.get('/viewChildCamps',(req,res)=>{
     const parentId = req.query.id;
-    db.query("SELECT CHILD.first_name, CHILD.last_name, CAMP.name, CAMP.start_date, CAMP.end_date FROM CHILD INNER JOIN PARENT_CHILDREN ON CHILD.id=PARENT_CHILDREN.child_id INNER JOIN PARENT ON PARENT_CHILDREN.parent_id=PARENT.id INNER JOIN CAMP_CAMPERS ON CHILD.id=CAMP_CAMPERS.camper_id INNER JOIN CAMP ON CAMP_CAMPERS.camp_id=CAMPS.id WHERE PARENT.id=?",[parentId],(err,result)=>{
+    console.log(req)
+    db.query("SELECT CHILD.first_name, CHILD.last_name, CAMP.camp_name, CAMP.start_date, CAMP.end_date FROM CHILD INNER JOIN PARENT_CHILDREN ON CHILD.id=PARENT_CHILDREN.child_id INNER JOIN PARENT ON PARENT_CHILDREN.parent_id=PARENT.id INNER JOIN CAMP_CAMPERS ON CHILD.id=CAMP_CAMPERS.camper_id INNER JOIN CAMP ON CAMP_CAMPERS.camp_id=CAMP.id WHERE PARENT.id=?",[parentId],(err,result)=>{
         if(err)
             console.log(err)
         else   
@@ -75,6 +89,35 @@ app.get('/campsAssignedTo',(req,res)=>{
             res.send(result)
             console.log(result)
         }
+    })
+})
+app.get('/getCamps', (req,res)=>{
+    db.query("SELECT * FROM CAMP",(err,result)=>{
+    if(err)
+        console.log(err)
+    else{
+        res.send(result)
+    }
+    })
+})
+app.post('/addChildToCamp', (req,res)=>{
+    const childID = req.body.childID
+    const campID = req.body.campID
+    db.query("INSERT INTO CAMP_CAMPERS (?,?)"[childID,campID],(err,result)=>{
+    if(err)
+        console.log(err)
+    else{
+        res.send(result)
+    }
+})
+})
+app.get('getChildren', (req,res)=>{
+    const parentID = req.query.parendID
+    db.query("SELECT CHILD.first_name, CHILD.last_name INNER JOIN PARENT_CHILDREN ON CHILD.id=PARENT_CHILDREN.child_id WHERE PARENT_CHILDREN.parent_id =?",[parentID], (err,result)=>{
+        if(err)
+            console.log(err)
+        else
+            res.send(result)
     })
 })
 app.listen(8080, () => {

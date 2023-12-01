@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 function ViewParticipants(){
-    // const user = useSelector((state)=>state.auth.user)
+    const user = window.localStorage.getItem('user')
     const [selectedCamp, setCamp] = useState()
     const handleDropDownChange = (e) => {
         setCamp(e.target.value)
@@ -27,7 +27,7 @@ function ViewParticipants(){
         const fetchData = async () => {
           try {
             const response = await axios.get('http://localhost:8080/campsAssignedTo',{
-                params:{ empId:2}
+                params:{ empId:user}
             });
            setcamplist(response.data);
            console.log(response.data)
@@ -40,8 +40,8 @@ function ViewParticipants(){
       }, []);
     return(
         <div>
-            <h4 class='whitespace-pre-wrap'>Select Camp
-            <select class=''name='campList' id='camp' onChange={e=>handleDropDownChange(e)}>
+            <h4 class='whitespace-pre-wrap'>Select Camp:
+            <select className='mt-1'name='campList' id='camp' onChange={e=>handleDropDownChange(e)}>
                 {selectedCamp==null && <option>Select</option>}
                 {camplist.map((camp)=>{
                     return <option value={camp.id}>{camp.camp_name}</option>
@@ -49,20 +49,23 @@ function ViewParticipants(){
             </select>
             </h4>
             {selectedCamp !==null&&
-            <table class='table table-fixed'>
+            <table className='table table-fixed w-full mt-3 border-seperate border border-spacing-2'>
                 <thead>
-                    <tr class='flex space-x-4 text-left'>
-                        <th class='col-xs-1'>#</th>
-                        <th class='col-xs-3'>First Name</th>
-                        <th class='col-xs-3'>Last Name</th>
+                    <tr className='flex space-x-4 border border-spacing-2'>
+                        <th className='w-1/12 text-center'>#</th>
+                        <th className='w-1/6 text-center'>First Name</th>
+                        <th className='w-1/6 text-center'>Last Name</th>
+                        <th className='w-1/6 text-center'>Parent First Name</th>
+                        <th className='w-1/6 text-center'>Parent Last Name</th>
+                        <th className='w-1/6 text-center'>Contact Phone</th>
                     </tr>
                 </thead>
                 <tbody>
                     {campersList.map((campers)=>{
-                        return <tr>
-                            <td class='col-xs-1'>1</td>
-                            <td class='col-xs-3'>{campers.first_name}</td>
-                            <td class='col-xs-3'>{campers.last_name}</td>
+                        return <tr className='flex space-x-4 border border-spcaing-2'>
+                            <td className='w-1/12 text-center'>1</td>
+                            <td className='w-1/6 text-center'>{campers.first_name}</td>
+                            <td className='w-1/6 text-center'>{campers.last_name}</td>
                         </tr>
                     })}
                 </tbody>

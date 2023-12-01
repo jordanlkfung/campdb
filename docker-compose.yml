@@ -1,0 +1,29 @@
+version: '3'
+services:
+  server:
+    build:
+      context: ./server
+    ports:
+      - '8080:8080'
+    depends_on:
+      - mysql
+    volumes:
+      - ./server:/usr/src/server
+
+  client:
+    build:
+      context: ./client
+    ports:
+      - '3000:3000'
+    depends_on:
+      - server
+    volumes:
+      - ./client:/usr/src/client
+
+  mysql:
+    build:
+      context: ./mysqldb
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./mysql_data:/var/lib/mysql
