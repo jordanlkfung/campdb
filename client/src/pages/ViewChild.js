@@ -22,47 +22,57 @@ function ViewChild(){
         <div>
             {window.localStorage.getItem('uType')!=='parent' && <Navigate to='/ViewParticipants' replace={true}/>}
             {getData.length!==0 ?
-            <table className="table-auto">
-                <thead>
-                    <tr className="flex space-x-4">
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        {/* <th>Age</th> */}
-                        <th>Camp Name</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {getData.map((child)=>{
-                          const parsedDate = new Date(child.start_date);
+                <table className="min-w-full divide-y divide-gray-200">
+  <thead className="bg-gray-50">
+    <tr className="text-left text-gray-600">
+      <th scope="col" className="py-2 px-4">
+        First Name
+      </th>
+      <th scope="col" className="py-2 px-4">
+        Last Name
+      </th>
+      <th scope="col" className="py-2 px-4">
+        Camp Name
+      </th>
+      <th scope="col" className="py-2 px-4">
+        Start Date
+      </th>
+      <th scope="col" className="py-2 px-4">
+        End Date
+      </th>
+    </tr>
+  </thead>
+  <tbody className="bg-white divide-y divide-gray-200">
+    {getData.map((child) => {
+      const parsedStartDate = new Date(child.start_date);
+      const formattedStartDate = parsedStartDate.toLocaleDateString('en-US', {
+        year: '2-digit',
+        month: '2-digit',
+        day: '2-digit',
+        timeZone: 'UTC',
+      });
 
-                          // Format the date as MM/DD/YY
-                          const formattedDate = parsedDate.toLocaleDateString('en-US', {
-                            year: '2-digit',
-                            month: '2-digit',
-                            day: '2-digit',
-                            timeZone: 'UTC', // Adjust the time zone as needed
-                          });
-                          const endDateParse = new Date(child.start_date);
+      const parsedEndDate = new Date(child.end_date);
+      const formattedEndDate = parsedEndDate.toLocaleDateString('en-US', {
+        year: '2-digit',
+        month: '2-digit',
+        day: '2-digit',
+        timeZone: 'UTC',
+      });
 
-                          // Format the date as MM/DD/YY
-                          const endDate = endDateParse.toLocaleDateString('en-US', {
-                            year: '2-digit',
-                            month: '2-digit',
-                            day: '2-digit',
-                            timeZone: 'UTC', // Adjust the time zone as needed
-                          });
-                        return <tr className="flex space-x-4">
-                            <td>{child.first_name}</td>
-                            <td>{child.last_name}</td>
-                            <td>{child.camp_name}</td>
-                            <td>{formattedDate}</td>
-                            <td>{endDate}</td>
-                        </tr>
-                    })}
-                </tbody>
-            </table>
+      return (
+        <tr key={child.id} className="text-gray-800">
+          <td className="py-3 px-4">{child.first_name}</td>
+          <td className="py-3 px-4">{child.last_name}</td>
+          <td className="py-3 px-4">{child.camp_name}</td>
+          <td className="py-3 px-4">{formattedStartDate}</td>
+          <td className="py-3 px-4">{formattedEndDate}</td>
+        </tr>
+      );
+    })}
+  </tbody>
+</table>
+
             :
             <div className="mx-auto border-2 p-9 md:p-12 w-72 md:w-92 border-sky-700 mt-36 h-84 bg-indigo-50 space-y-2">
                 <h2 className="text-2xl flex justify-center p-3">No Camps Found</h2>

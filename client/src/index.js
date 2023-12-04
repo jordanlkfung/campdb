@@ -12,6 +12,8 @@ import ViewParticipants from './pages/ViewParticipants';
 import ViewChild from './pages/ViewChild';
 import AddChild from './pages/AddChild';
 import RegisterCamp from './pages/RegisterCamp';
+import ViewCamps from './pages/ViewCamps';
+import ViewStaff from './pages/ViewStaff';
 
 // const router = createBrowserRouter([//nested routes with object orientation
 //   {
@@ -36,6 +38,8 @@ const router = createBrowserRouter(
       <Route path ='/ViewChild' element = {<ViewChild/>}/>
       <Route path ='/AddChild' element = {<AddChild/>}/>
       <Route path ='/RegisterCamp' element = {<RegisterCamp/>}/>
+      <Route path= '/ViewCamps' element = {<ViewCamps/>}/>
+      <Route path= '/ViewStaff' element = {<ViewStaff/>}/>
     </Route>
   )
   )

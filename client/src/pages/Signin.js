@@ -10,8 +10,8 @@ function Signin() {
   const submitHandler = (e) => {
     e.preventDefault();
   axios.post('http://localhost:8080/signin',{username: username,password: password}).then((data)=>{
-    if(data.data.length!=0&&data.data[0].id==username){
-      window.localStorage.setItem("user", data.data[0].id)
+    if(data.data.length!=0&&data.data[0].email==username){
+      window.localStorage.setItem("user", data.data[0].email)
       window.localStorage.setItem("name",data.data[0].first_name+' '+data.data[0].last_name)
       window.localStorage.setItem("uType","staff")
       console.log(data.data[0].id)

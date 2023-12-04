@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 
 function ViewParticipants(){
     const user = window.localStorage.getItem('user')
@@ -24,6 +23,7 @@ function ViewParticipants(){
     }
     const [camplist, setcamplist] = useState([]);
     useEffect(() => {
+        console.log(user)
         const fetchData = async () => {
           try {
             const response = await axios.get('http://localhost:8080/campsAssignedTo',{
@@ -61,11 +61,14 @@ function ViewParticipants(){
                     </tr>
                 </thead>
                 <tbody>
-                    {campersList.map((campers)=>{
+                    {campersList.map((campers, index)=>{
                         return <tr className='flex space-x-4 border border-spcaing-2'>
-                            <td className='w-1/12 text-center'>1</td>
+                            <td className='w-1/12 text-center'>{index+1}</td>
                             <td className='w-1/6 text-center'>{campers.first_name}</td>
                             <td className='w-1/6 text-center'>{campers.last_name}</td>
+                            <td className='w-1/6 text-center'>{campers.parent_first_name}</td>
+                            <td className='w-1/6 text-center'>{campers.parent_last_name}</td>
+                            <td className='w-1/6 text-center'>{campers.phone}</td>
                         </tr>
                     })}
                 </tbody>

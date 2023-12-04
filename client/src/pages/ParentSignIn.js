@@ -8,7 +8,7 @@ function ParentSignIn(){
     const submitHandler = (e) =>{
         e.preventDefault()
         axios.post('http://localhost:8080/ParentSignIn',{username: username, password:password}).then((data)=>{
-            if(data.data.length!=0&&data.data[0].id==username){
+            if(data.data.length!=0&&data.data[0].email==username){
                 window.localStorage.setItem("user",username)
                 window.localStorage.setItem("name", data.data[0].first_name+' '+data.data[0].last_name)
                 window.localStorage.setItem("uType","parent")
